@@ -16,6 +16,8 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
+
 public class dynamodb {
 
     AmazonDynamoDB dynamoDBclient;
