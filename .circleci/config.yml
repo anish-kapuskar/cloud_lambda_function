@@ -54,7 +54,7 @@ jobs:
             ls -al
       
       - run:
-        name: Update Lambda Function zip
+          name: Update Lambda Function zip
           command: |
             cd lambda_deploy_artifact
             pwd
