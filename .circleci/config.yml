@@ -42,9 +42,9 @@ jobs:
             mkdir -p lambda_deploy_artifact
             echo "Changing directory to lambda_deploy_artifact"
             cd lambda_deploy_artifact
-            echo "Copying the jar file from ../LambdaApp/target/original-lambdaapp-1.0-SNAPSHOT.jar to the lambda_deploy_artifact"
-            cp ../LambdaApp/target/original-lambdaapp-1.0-SNAPSHOT.jar .
-            chmod -R 777 original-lambdaapp-1.0-SNAPSHOT.jar
+            echo "Copying the jar file from ../LambdaApp/target/lambdaapp-1.0-SNAPSHOT.jar to the lambda_deploy_artifact"
+            cp ../LambdaApp/target/lambdaapp-1.0-SNAPSHOT.jar .
+            chmod -R 777 lambdaapp-1.0-SNAPSHOT.jar
             
             ls -al
             pwd
@@ -52,19 +52,19 @@ jobs:
             cd ..
             pwd
             ls -al
-
+      
       - run:
-          name: Update Lambda Function zip
+        name: Update Lambda Function zip
           command: |
             cd lambda_deploy_artifact
             pwd
             ls -al
-            
+
             export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
             export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
             export AWS_DEFAULT_REGION=us-east-1
             aws lambda update-function-code --function-name lambdaapp \
-            --zip-file fileb://original-lambdaapp-1.0-SNAPSHOT.jar
+            --zip-file fileb://lambdaapp-1.0-SNAPSHOT.jar
 
 workflows:
   version: 2
