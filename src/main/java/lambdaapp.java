@@ -17,6 +17,8 @@ import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
+
 public class lambdaapp implements RequestHandler<SNSEvent, Object> {
 
     static Context context = null;
