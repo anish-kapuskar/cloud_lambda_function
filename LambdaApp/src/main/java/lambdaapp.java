@@ -1,5 +1,4 @@
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
+
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -98,18 +97,7 @@ public class lambdaapp implements RequestHandler<SNSEvent, Object> {
                 context.getLogger().log("Item with id "+request.getRecords().get(0).getSNS().getMessage()+" already exist");
             }
         }
-        catch(AmazonServiceException ase){
-            context.getLogger().log("Could not complete operation");
-            context.getLogger().log("Error Message:  " + ase.getMessage());
-            context.getLogger().log("HTTP Status:    " + ase.getStatusCode());
-            context.getLogger().log("AWS Error Code: " + ase.getErrorCode());
-            context.getLogger().log("Error Type:     " + ase.getErrorType());
-            context.getLogger().log("Request ID:     " + ase.getRequestId());
-        }
-        catch (AmazonClientException ace) {
-            context.getLogger().log("Internal error occured communicating with DynamoDB");
-            context.getLogger().log("Error Message:  " + ace.getMessage());
-        }
+
         catch(Exception e){
             context.getLogger().log(e.getMessage());
         }
