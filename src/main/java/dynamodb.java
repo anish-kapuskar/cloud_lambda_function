@@ -41,32 +41,32 @@ public class dynamodb {
         }
     }
 
-    public void insert(String email, String token) {
+    public void insert(String username, String token) {
         try {
 
-            PutItemOutcome outcome = table.putItem(new Item().withPrimaryKey("email", email)
+            PutItemOutcome outcome = table.putItem(new Item().withPrimaryKey("username", username)
                     .withString("token", token)
                     .withNumber("expiration", getExpiryEpoch()));
             lambdaapp.logger.log("PutItem succeeded:\n" + outcome.toString());
 
         } catch (Exception e) {
 
-            lambdaapp.logger.log("Insertion failed for: " + email);
+            lambdaapp.logger.log("Insertion failed for: " + username);
             lambdaapp.logger.log("Error in Insert: " + e.getMessage());
         }
 
     }
 
-    public String getToken(String email) {
+    public String getToken(String username) {
         String token=null;
         try {
             lambdaapp.logger.log("Attempting to read the item...");
 
             QuerySpec spec = new QuerySpec()
-                    .withKeyConditionExpression("email = :v_email")
+                    .withKeyConditionExpression("username = :v_username")
                     .withFilterExpression("expiration > :v_expiration")
                     .withValueMap(new ValueMap()
-                            .withString(":v_email", email)
+                            .withString(":v_username", username)
                             .withNumber(":v_expiration", getCurrentEpoch()));
 
             ItemCollection<QueryOutcome> items = table.query(spec);
@@ -77,7 +77,7 @@ public class dynamodb {
 
             if(items.getAccumulatedItemCount()==0){
                 token=UUID.randomUUID().toString();
-                insert(email, token);
+                insert(username, token);
                 lambdaapp.logger.log("New token generated ");
             }
             else {
@@ -87,7 +87,7 @@ public class dynamodb {
             lambdaapp.logger.log("End of getToken");
 
         } catch (Exception e) {
-            lambdaapp.logger.log("Unable to read item: " + email);
+            lambdaapp.logger.log("Unable to read item: " + username);
             lambdaapp.logger.log("Error in getToken: "+ e.getMessage());
         }
         return token;
