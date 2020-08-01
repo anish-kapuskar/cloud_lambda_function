@@ -29,14 +29,19 @@ public class lambdaapp implements RequestHandler<SNSEvent, Object> {
         context.getLogger().log("Invocation started: " + timeStamp);
 
         String domain="prod.anishkapuskar.me";
-        JSONObject body = new JSONObject(request.getRecords().get(0).getSNS().getMessage());
+
+        String snsemailjson = "{ \"username\":\""+request.getRecords().get(0).getSNS().getMessage()+"\"}";
+        JSONObject body = new JSONObject(snsemailjson);
 
         context.getLogger().log(request.getRecords().get(0).getSNS().getMessage());
         dynamodb dbop = new dynamodb();
-        String token = dbop.getToken(body.getString("email"));
-        //if(token!=null)
-        sendEmail(body.getString("email"), domain, token);
-
+        String token = dbop.getToken(body.getString("username"));
+        if(token!=null) {
+            sendEmail(body.getString("username"), domain, token);
+        }
+        else{
+            context.getLogger().log("Null token, email not sent");
+        }
         timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
         context.getLogger().log("Invocation completed: " + timeStamp);
         return null;
